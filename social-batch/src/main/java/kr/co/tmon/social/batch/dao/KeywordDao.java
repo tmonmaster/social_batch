@@ -19,6 +19,10 @@ public class KeywordDao {
 	@Autowired
 	private SqlSession	sqlSession;
 
+	/**
+	 * 커밋 테스트
+	 * @return
+	 */
 	public List<Keyword> getKeywordList() {
 		return sqlSession.selectList("kr.co.tmon.social.batch.vo.Keyword.getKeyword");
 	}

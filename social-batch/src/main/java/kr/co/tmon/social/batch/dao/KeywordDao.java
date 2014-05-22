@@ -20,8 +20,9 @@ public class KeywordDao {
 	private SqlSession	sqlSession;
 
 	/**
-	 *
+	 * ighgggghkgkjgjgkh
 	 * 커밋 테스트
+	 * 테스트2
 	 * @return
 	 */
 	public List<Keyword> getKeywordList() {

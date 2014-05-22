@@ -1,8 +1,12 @@
 package kr.co.tmon.social.batch.service;
 
 import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -27,23 +31,23 @@ import org.w3c.dom.NodeList;
 @Service
 public class NaverNewsService {
 
-	private static final String	URL				= "http://newssearch.naver.com/search.naver?where=rss&query=";
-	private static final String	ITEM			= "item";
-	private static final String	TITLE			= "title";
-	private static final String	LINK			= "link";
-	private static final String	DESCRIPTION		= "description";
-	private static final String	PUBDATE			= "pubDate";
-	private static final String	AUTHOR			= "author";
-	private static final String	THUMBNAIL		= "media:thumbnail";
+	private static final String URL = "http://newssearch.naver.com/search.naver?where=rss&query=";
+	private static final String ITEM = "item";
+	private static final String TITLE = "title";
+	private static final String LINK = "link";
+	private static final String DESCRIPTION = "description";
+	private static final String PUBDATE = "pubDate";
+	private static final String AUTHOR = "author";
+	private static final String THUMBNAIL = "media:thumbnail";
 
 	@Autowired
 	private KeywordDao keywordDao;
-	
-	List<News>					naverNewsList	= new ArrayList<News>();
+
+	private List<News> naverNewsList = new ArrayList<News>();
 
 	public List<News> getNewsList() throws Exception {
 		List<Keyword> keywordList = keywordDao.getKeywordList();
-		
+
 		for (int index = 0; index < keywordList.size(); index++)
 			parse(keywordList.get(index).getCompanyName(), keywordList.get(index).getCompanyKeyword());
 
@@ -59,7 +63,7 @@ public class NaverNewsService {
 		getTagValueAndAttribute(document, companyName);
 	}
 
-	private List<News> getTagValueAndAttribute(Document document, String companyName) {
+	private List<News> getTagValueAndAttribute(Document document, String companyName) throws Exception {
 		Element tagValueRoot = document.getDocumentElement();
 		NodeList tagValueNodeList = tagValueRoot.getElementsByTagName(ITEM);
 
@@ -70,7 +74,13 @@ public class NaverNewsService {
 			Element element = (Element) tagValueNodeList.item(index);
 			NamedNodeMap attributeMap = attributeNodeList.item(index).getAttributes();
 
-			naverNewsList.add(new News(companyName, getItem(element, TITLE), getItem(element, DESCRIPTION), attributeMap.item(0).getNodeValue(), getItem(element, PUBDATE), getItem(element, LINK), getItem(element, AUTHOR)));
+			String pubDate = getItem(element, PUBDATE);
+			SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
+			Date resultDate = dateFormat.parse(pubDate);
+			SimpleDateFormat resultFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String formatedDate = resultFormat.format(resultDate);
+
+			naverNewsList.add(new News(companyName, getItem(element, TITLE), getItem(element, DESCRIPTION), attributeMap.item(0).getNodeValue(), formatedDate, getItem(element, LINK), getItem(element, AUTHOR)));
 		}
 
 		return naverNewsList;

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.tmon.social.batch.dao.mapper.NewsMapper">
+	<insert id="insertNewsList" parameterType="list">
+		INSERT
+		IGNORE
+		INTO news(
+			link,
+			title,
+			preview,
+			image,
+			date,
+			provider		
+		)
+		VALUES(
+		<foreach collection="list" item="news" separator="), (">
+			#{news.link},
+			#{news.title},
+			#{news.preview},
+			#{news.image},
+			#{news.date},
+			#{news.provider}
+		</foreach>
+		)
+	</insert>
+	<insert id="insertRelationList" parameterType="list">
+		INSERT
+		IGNORE
+		INTO news_corp_relation(
+				news_id,
+				corp_id		
+		)
+		SELECT
+			news.news_id,
+			corporation.corp_id
+		FROM
+			news,
+			corporation
+		<where>
+			<foreach collection="list" item="news" separator=" OR ">
+				(news.date = #{news.date} AND corporation.corp_name = #{news.socialName} AND news.link = #{news.link})
+			</foreach> 
+		</where>
+	</insert>
+</mapper>

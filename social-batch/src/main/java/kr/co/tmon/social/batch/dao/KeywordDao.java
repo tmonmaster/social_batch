@@ -20,7 +20,7 @@ public class KeywordDao {
 	private SqlSession	sqlSession;
 
 	/**
-	 * DFDF
+	 * ighgggghkgkjgjgkh
 	 * 커밋 테스트
 	 * @return
 	 */

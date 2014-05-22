@@ -7,8 +7,12 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import kr.co.tmon.social.batch.dao.KeywordDao;
+import kr.co.tmon.social.batch.vo.Keyword;
 import kr.co.tmon.social.batch.vo.News;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -20,6 +24,7 @@ import org.w3c.dom.NodeList;
  *         소셜커머스 3사 키워드로 검색한 네이버 뉴스 RSS를 파싱하여 List로 넘겨준다.
  * 
  */
+@Service
 public class NaverNewsService {
 
 	private static final String	URL				= "http://newssearch.naver.com/search.naver?where=rss&query=";
@@ -31,9 +36,14 @@ public class NaverNewsService {
 	private static final String	AUTHOR			= "author";
 	private static final String	THUMBNAIL		= "media:thumbnail";
 
+	@Autowired
+	private KeywordDao keywordDao;
+	
 	List<News>					naverNewsList	= new ArrayList<News>();
 
-	public List<News> getNewsList(List<Keyword> keywordList) throws Exception {
+	public List<News> getNewsList() throws Exception {
+		List<Keyword> keywordList = keywordDao.getKeywordList();
+		
 		for (int index = 0; index < keywordList.size(); index++)
 			parse(keywordList.get(index).getCompanyName(), keywordList.get(index).getCompanyKeyword());
 

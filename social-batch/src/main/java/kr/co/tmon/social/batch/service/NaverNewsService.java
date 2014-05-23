@@ -25,7 +25,7 @@ import org.w3c.dom.NodeList;
 /**
  * @author Yunho Lee
  * 
- *         소셜커머스 3사 키워드로 검색한 네이버 뉴스 RSS를 파싱하여 List로 넘겨준다.
+ * 소셜커머스 3사 키워드로 검색한 네이버 뉴스 RSS를 파싱하여 List로 넘겨준다.
  * 
  */
 @Service
@@ -74,16 +74,21 @@ public class NaverNewsService {
 			Element element = (Element) tagValueNodeList.item(index);
 			NamedNodeMap attributeMap = attributeNodeList.item(index).getAttributes();
 
-			String pubDate = getItem(element, PUBDATE);
-			SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
-			Date resultDate = dateFormat.parse(pubDate);
-			SimpleDateFormat resultFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			String formatedDate = resultFormat.format(resultDate);
+			String formatedDate = convertDateFormat(element);
 
 			naverNewsList.add(new News(companyName, getItem(element, TITLE), getItem(element, DESCRIPTION), attributeMap.item(0).getNodeValue(), formatedDate, getItem(element, LINK), getItem(element, AUTHOR)));
 		}
 
 		return naverNewsList;
+	}
+
+	private String convertDateFormat(Element element) throws ParseException {
+		String pubDate = getItem(element, PUBDATE);
+		SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z", Locale.ENGLISH);
+		Date resultDate = dateFormat.parse(pubDate);
+		SimpleDateFormat resultFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		return resultFormat.format(resultDate);
 	}
 
 	private static String getItem(Element inputElement, String tagName) {

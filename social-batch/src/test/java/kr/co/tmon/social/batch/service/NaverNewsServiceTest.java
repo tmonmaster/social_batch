@@ -2,20 +2,19 @@ package kr.co.tmon.social.batch.service;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import kr.co.tmon.social.batch.vo.Keyword;
 import kr.co.tmon.social.batch.vo.News;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * 
- * @author Yunho Lee 네이버 뉴스 RSS 파싱 테스트
+ * @author Yunho Lee
+ * 
+ * 네이버 뉴스 RSS 파싱 테스트
  * 
  */
 

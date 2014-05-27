@@ -4,9 +4,6 @@ logAppender=stdout
 logFileName=D:/social_batch/socialDataLog.log
 
 # DB url, username, password
-url=aaaaaaaaaaaaaaaaaaaaaaaaaa
-username=headcha
-password=ckwjdgus!
-
-#test
-testData=test
+url=release
+username=release
+password=release

@@ -9,18 +9,25 @@ import kr.co.tmon.social.batch.vo.News;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = "classpath:spring/applicationContext.xml")
+@TransactionConfiguration(defaultRollback = true)
 public class NewsDaoTest {
 
-	private NewsDao		newsDao;
-	private List<News>	newsList;
+	@Autowired
+	private NewsDao newsDao;
+	private List<News> newsList;
 
 	@Before
 	public void init() {
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring/applicationContext.xml");
-		newsDao = applicationContext.getBean("newsDao", NewsDao.class);
 		newsList = new ArrayList<News>();
 		for (int counter = 0; counter < 10; counter++) {
 			News news = new News();
@@ -36,11 +43,15 @@ public class NewsDaoTest {
 	}
 
 	@Test
+	@Transactional
+	@Rollback(true)
 	public void testInsertNewsList() throws Exception {
 		assertNotNull(newsDao.insertNewsList(newsList));
 	}
 
 	@Test
+	@Transactional
+	@Rollback(true)
 	public void testInsertRelationList() throws Exception {
 		assertNotNull(newsDao.insertRelationList(newsList));
 	}

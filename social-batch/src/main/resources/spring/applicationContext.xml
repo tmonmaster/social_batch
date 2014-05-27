@@ -17,11 +17,11 @@
 	<!-- DataSource -->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close" p:driverClassName="${jdbc.driverClassName}"
-		p:url="${jdbc.url}"
+		p:url="jdbc:mysql://${jdbc.url}?useUnicode=true&amp;characterEncoding=utf8&amp;zeroDateTimeBehavior=convertToNull&amp;useServerPrepStmts=false&amp;characterSetResults=utf8&amp;autoReconnect=true&amp;connectTimeout=1500"
 		p:removeAbandoned="true" p:removeAbandonedTimeout="30" p:logAbandoned="true"
 		p:testOnBorrow="false" p:username="${jdbc.username}" p:password="${jdbc.password}"
-		p:initialSize="${jdbc.initialSize}" p:maxActive="${jdbc.maxActive}" p:maxIdle="40" p:minIdle="6"
-		p:maxWait="1000" p:testWhileIdle="true"
+		p:initialSize="${jdbc.initialSize}" p:maxActive="${jdbc.maxActive}"
+		p:maxIdle="40" p:minIdle="6" p:maxWait="1000" p:testWhileIdle="true"
 		p:timeBetweenEvictionRunsMillis="30000" p:numTestsPerEvictionRun="10"
 		p:validationQuery="SELECT 1" />
 
@@ -40,12 +40,6 @@
 	</bean>
 
 
-	<context:component-scan base-package="kr.co.tmon.social.batch"
-		use-default-filters="false">
-		<context:include-filter type="annotation"
-			expression="org.springframework.stereotype.Service" />
-	</context:component-scan>
+	<context:component-scan base-package="kr.co.tmon.social.batch" />
 
-	<import resource="classpath:spring/applicationContext-service.xml" />
-	<import resource="classpath:spring/applicationContext-dao.xml" />
 </beans>

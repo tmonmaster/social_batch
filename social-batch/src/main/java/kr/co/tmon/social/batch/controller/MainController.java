@@ -15,7 +15,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class MainController {
 	public static void main(String[] args) throws Exception {
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring/applicationContext.xml");
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:/spring/applicationContext.xml");
 		
 		NaverNewsService naverNewsService = applicationContext.getBean("naverNewsService", NaverNewsService.class);
 		List<News> newsList = naverNewsService.getNewsList();

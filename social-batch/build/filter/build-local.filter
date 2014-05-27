@@ -4,10 +4,6 @@ logAppender=stdout
 logFileName=D:/social_batch/socialDataLog.log
 
 # DB url, username, password
-url=dbsafer.tmonc.net:4005/tmon_mobile
-username=headcha
-password=ckwjdgus!
-
-#data.xml
-testData=test
-oneTeamUrl=http://127.0.0.1:8080
+url=10.5.220.81:3306/issue_analyzer
+username=ukino07
+password=admin

@@ -9,15 +9,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
- * @author raspilla16@tmon.co.kr
+ * @author 정승현 (raspilla16@tmon.co.kr)
  * 
  */
 @Service
 public class NewsService {
 	@Autowired
-	private NewsDao	newsDao;
+	private NewsDao newsDao;
 
 	public int insertNewsList(List<News> newsList) {
-		return newsDao.insertNewsList(newsList) + newsDao.insertRelationList(newsList);
+		int insertedNews = newsDao.insertNewsList(newsList);
+		newsDao.insertRelationList(newsList);
+		
+		return insertedNews;
 	}
 }

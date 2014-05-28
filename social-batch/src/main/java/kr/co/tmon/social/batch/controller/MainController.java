@@ -25,7 +25,7 @@ public class MainController {
 		NewsService newsService = applicationContext.getBean("newsService", NewsService.class);
 		newsService.insertNewsList(newsList);
 
-		AndroidAppReviewService googleReviewService = applicationContext.getBean("googleReviewService", AndroidAppReviewService.class);
-		googleReviewService.insertReviewList();
+//		AndroidAppReviewService googleReviewService = applicationContext.getBean("googleReviewService", AndroidAppReviewService.class);
+//		googleReviewService.insertReviewList();
 	}
 }

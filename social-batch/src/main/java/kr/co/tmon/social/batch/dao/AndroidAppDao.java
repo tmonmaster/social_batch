@@ -2,7 +2,7 @@ package kr.co.tmon.social.batch.dao;
 
 import java.util.List;
 
-import kr.co.tmon.social.batch.vo.GoogleReview;
+import kr.co.tmon.social.batch.vo.AndroidApp;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,16 +13,12 @@ import org.springframework.stereotype.Repository;
  * 
  */
 @Repository
-public class GoogleReviewDao {
+public class AndroidAppDao {
 
 	@Autowired
 	private SqlSession sqlSession;
 
-	public int insertGoogleReviewList(List<GoogleReview> googleReviewList) {
-		return 0;
-	}
-
-	public int insertRelationList(List<GoogleReview> googleReviewList) {
-		return 0;
+	public List<AndroidApp> getAppList() {
+		return null;
 	}
 }

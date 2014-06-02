@@ -10,12 +10,16 @@
 	<typeAliases>
 		<typeAlias type="kr.co.tmon.social.batch.vo.Keyword" alias="keyword"/>
 		<typeAlias type="kr.co.tmon.social.batch.vo.News" alias="news"/>
+		<typeAlias type="kr.co.tmon.social.batch.vo.AppInfo" alias="appInfo"/>
+		<typeAlias type="kr.co.tmon.social.batch.vo.AndroidAppReview" alias="androidAppReview"/>
 	</typeAliases>
 
 	<!-- SQL Definition :: file include -->
 	<mappers>
 		<mapper resource="sql/mapper/KeywordMapper.xml" />
 		<mapper resource="sql/mapper/NewsMapper.xml" />
+		<mapper resource="sql/mapper/AppInfoMapper.xml" />		
+		<mapper resource="sql/mapper/AndroidAppReviewMapper.xml" />		
 	</mappers>
 
 </configuration>

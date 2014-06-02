@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.tmon.social.batch.dao.mapper.AndroidAppReviewMapper">
+	<insert id="insertAndroidAppReviewList" parameterType="list">
+		INSERT
+		IGNORE
+		INTO android_app_review(
+			review_link,
+			user_name,
+			user_link,
+			review_date,      
+			star_score,       
+			review_title,     
+			review_content,   
+			google_app_version,       
+			android_app_id
+		)
+		VALUES(
+		<foreach collection="list" item="androidAppReview" separator="), (">
+			#{androidAppReview.reviewLink},
+			#{androidAppReview.userName},
+			#{androidAppReview.userLink},
+			#{androidAppReview.reviewDate},
+			#{androidAppReview.starScore},
+			#{androidAppReview.reviewTitle},
+			#{androidAppReview.reviewContent},
+			#{androidAppReview.googleAppVersion},
+			#{androidAppReview.androidAppId}
+		</foreach>
+		)
+		<!--ON DUPLICATE KEY UPDATE
+			user_name = VALUES(user_name),
+			user_link = VALUES(user_link),
+			review_date = VALUES(review_date),
+			star_score = VALUES(star_score),
+			review_title = VALUES(review_title),
+			review_content = VALUES(review_content),
+			google_app_version = VALUES(google_app_version) -->
+	</insert>
+	
+	<select id="getLastReviewDate" resultType="string">
+		SELECT
+			MAX(review_date) AS reviewDate
+		FROM
+			android_app_review
+	</select>
+</mapper>

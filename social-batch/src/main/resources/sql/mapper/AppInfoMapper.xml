@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.co.tmon.social.batch.dao.mapper.AppInfoMapper">
+	<select id="getAppInfoList" resultType="appInfo">
+		SELECT
+			MAX(google_app_version) AS googleAppVersion,
+			android_app_id AS appId,
+			MAX(android_app_version) AS androidAppVersion
+		FROM
+			google_play
+		GROUP BY
+			android_app_id
+	</select>
+	<insert id="insertAppInfoFromGoogle" parameterType="appInfo">
+		INSERT
+		INTO google_play(
+			google_app_version,
+			android_app_id,
+			android_app_version
+		)
+		VALUES(
+			#{googleAppVersion},
+			#{appId},
+			#{androidAppVersion}
+		)
+	</insert>
+</mapper>

@@ -9,7 +9,7 @@ public class AndroidAppReview {
 	private String userName;
 	private String userLink;
 	private String reviewDate;
-	private String starScore;
+	private int starScore;
 	private String reviewTitle;
 	private String reviewContent;
 	private int googleAppVersion;
@@ -47,11 +47,11 @@ public class AndroidAppReview {
 		this.reviewDate = reviewDate;
 	}
 
-	public String getStarScore() {
+	public int getStarScore() {
 		return starScore;
 	}
 
-	public void setStarScore(String starScore) {
+	public void setStarScore(int starScore) {
 		this.starScore = starScore;
 	}
 

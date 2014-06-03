@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import kr.co.tmon.social.batch.vo.AndroidAppReview;
+import kr.co.tmon.social.batch.vo.AppInfo;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,13 @@ public class AndroidAppReviewDao {
 		return sqlSession.insert(ANDROID_APP_REVIEW_MAPPER + "insertAndroidAppReviewList", googleReviewList);
 	}
 
-	public String getLastReviewDate() {
-		return sqlSession.selectOne(ANDROID_APP_REVIEW_MAPPER + "getLastReviewDate");
+	public Date getLastReviewDateFromDbForTargetVersion(String appId, int targetVersion) {
+		AppInfo appInfo = new AppInfo(appId, targetVersion);
 
+		return sqlSession.selectOne(ANDROID_APP_REVIEW_MAPPER + "getLastReviewDate", appInfo);
+	}
+	
+	public int getLastReviewVersion(String appId){
+		return sqlSession.selectOne(ANDROID_APP_REVIEW_MAPPER + "getLastReviewVersion", appId);
 	}
 }

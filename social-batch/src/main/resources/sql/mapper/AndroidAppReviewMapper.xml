@@ -40,10 +40,23 @@
 			google_app_version = VALUES(google_app_version) -->
 	</insert>
 	
-	<select id="getLastReviewDate" resultType="string">
+	<select id="getLastReviewDate" parameterType="appInfo" resultType="date">
 		SELECT
 			MAX(review_date) AS reviewDate
 		FROM
 			android_app_review
+		WHERE
+			android_app_id = #{appId}
+		AND
+			google_app_version = #{googleAppVersion}
+	</select>
+	
+	<select id="getLastReviewVersion" parameterType="string" resultType="int">
+		SELECT
+			MAX(google_app_version)
+		FROM
+			android_app_review
+		WHERE
+			android_app_id = #{appId}		
 	</select>
 </mapper>

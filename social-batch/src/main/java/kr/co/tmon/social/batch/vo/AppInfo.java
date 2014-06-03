@@ -3,12 +3,19 @@ package kr.co.tmon.social.batch.vo;
 /**
  * 
  * @author Yunho Lee (forfle@tmon.co.kr)
- *
+ * 
  */
 public class AppInfo {
 	private String appId;
 	private String androidAppVersion;
 	private int googleAppVersion;
+
+	public AppInfo() {} // 마이바티스에서 사용하려면 있어야함
+
+	public AppInfo(String appId, int googleAppVersion) {
+		this.appId = appId;
+		this.googleAppVersion = googleAppVersion;
+	}
 
 	public String getAppId() {
 		return appId;

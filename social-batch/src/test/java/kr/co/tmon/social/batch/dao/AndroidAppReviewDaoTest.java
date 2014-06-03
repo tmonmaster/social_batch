@@ -5,7 +5,6 @@ import java.util.List;
 
 import kr.co.tmon.social.batch.vo.AndroidAppReview;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +32,7 @@ public class AndroidAppReviewDaoTest {
 		androidAppReview.setUserName("lee");
 		androidAppReview.setUserLink("http://test.com/userlink");
 		androidAppReview.setReviewDate("2014-05-30");
-		androidAppReview.setStarScore("80");
+		androidAppReview.setStarScore(80);
 		androidAppReview.setReviewTitle("정말좋아요");
 		androidAppReview.setReviewContent("정말로요");
 		androidAppReview.setGoogleAppVersion(47);
@@ -44,8 +43,13 @@ public class AndroidAppReviewDaoTest {
 	}
 
 	@Test
-		public void testGetLastReviewDate() throws Exception {
-			System.out.println(androidAppReviewDao.getLastReviewDate());
+		public void testGetLastReviewDateFromDbForTargetVersion() throws Exception {
+			System.out.println(androidAppReviewDao.getLastReviewDateFromDbForTargetVersion("com.tmon", 47));
 		}
+
+	@Test
+	public void testGetLastReviewVersion() throws Exception {
+		System.out.println(androidAppReviewDao.getLastReviewVersion("com.tmon"));
+	}
 
 }

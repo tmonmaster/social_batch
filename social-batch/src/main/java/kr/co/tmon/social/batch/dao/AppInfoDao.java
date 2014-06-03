@@ -14,6 +14,10 @@ import org.springframework.stereotype.Repository;
  * 
  * @author Yunho Lee (forfle@tmon.co.kr)
  * 
+ *         DB에서 앱 정보(앱 버전, 아이디)를 가져온다.
+ *         현재 구글 플레이에 등록 된 최신 앱 정보를 DB에 넣는다.
+ *         구글 플레이에서 앱의 평균 별점 정보를 가져온다.
+ *         
  */
 @Repository
 public class AppInfoDao {

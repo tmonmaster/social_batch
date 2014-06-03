@@ -20,13 +20,13 @@ public class AppInfoDaoTest {
 
 	@Autowired
 	private AppInfoDao appInfoDao;
-	
+
 	@Test
 	public void testGetAppInfoList() throws Exception {
 		List<AppInfo> appInfoList = appInfoDao.getAppInfoList();
 		System.out.println(appInfoList);
 	}
-	
+
 	@Test
 	@Transactional
 	@Rollback(true)
@@ -37,5 +37,12 @@ public class AppInfoDaoTest {
 		appInfo.setGoogleAppVersion(48);
 		appInfoDao.insertVersion(appInfo);
 	}
-	
+
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testUpdateAverageScore() throws Exception {
+		appInfoDao.updateAverageScore("com.tmon", "4.9");
+	}
+
 }

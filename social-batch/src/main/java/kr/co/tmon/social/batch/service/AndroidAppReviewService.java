@@ -223,7 +223,7 @@ public class AndroidAppReviewService {
 	}
 
 	private void checkLatestVersion(AppInfo appInfo) throws Exception {
-		AppInfo appInfoFromGoogle = getLatestVersionFromGoogle(appInfo.getAppId());
+		AppInfo appInfoFromGoogle = getLatestInfoFromGoogle(appInfo.getAppId());
 
 		if (appInfo.getGoogleAppVersion() < appInfoFromGoogle.getGoogleAppVersion())
 			appInfoDao.insertVersion(appInfoFromGoogle);
@@ -231,7 +231,7 @@ public class AndroidAppReviewService {
 		appInfo = appInfoFromGoogle;
 	}
 
-	private AppInfo getLatestVersionFromGoogle(String appId) throws Exception {
+	private AppInfo getLatestInfoFromGoogle(String appId) throws Exception {
 		AppInfo latestAppInfo = new AppInfo();
 		HttpURLConnection httpConnectionForVersionInfo = makeConnectionForVersionInfo(appId);
 		Document googlePlayDocument = getDocumentFromVersionInfoConnection(httpConnectionForVersionInfo);
@@ -240,6 +240,9 @@ public class AndroidAppReviewService {
 	}
 
 	private AppInfo parseAppInfoFromDocument(String appId, AppInfo latestAppInfo, Document googlePlayDocument) {
+		Element averageScore = googlePlayDocument.select(".score").first();
+		appInfoDao.updateAverageScore(appId, averageScore.text());
+		
 		Element appVersion = googlePlayDocument.select("div[itemprop=softwareVersion]").first();
 		Element googleAppVersion = googlePlayDocument.select("div .dropdown-child").last();
 

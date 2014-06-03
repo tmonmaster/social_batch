@@ -27,4 +27,12 @@
 			#{androidAppVersion}
 		)
 	</insert>
+	<update id="updateAverageScore" parameterType="map">
+		UPDATE
+			android_app
+		SET
+			android_app_score = #{averageScore}
+		WHERE
+			android_app_id = #{appId}
+	</update>
 </mapper>

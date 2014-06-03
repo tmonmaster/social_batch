@@ -5,7 +5,6 @@ import java.util.List;
 import kr.co.tmon.social.batch.service.AndroidAppReviewService;
 import kr.co.tmon.social.batch.service.NaverNewsService;
 import kr.co.tmon.social.batch.service.NewsService;
-import kr.co.tmon.social.batch.vo.AndroidAppReview;
 import kr.co.tmon.social.batch.vo.News;
 
 import org.springframework.context.ApplicationContext;
@@ -25,7 +24,7 @@ public class MainController {
 		NewsService newsService = applicationContext.getBean("newsService", NewsService.class);
 		newsService.insertNewsList(newsList);
 
-//		AndroidAppReviewService googleReviewService = applicationContext.getBean("googleReviewService", AndroidAppReviewService.class);
-//		googleReviewService.insertReviewList();
+		AndroidAppReviewService googleReviewService = applicationContext.getBean("androidAppReviewService", AndroidAppReviewService.class);
+		googleReviewService.insertReviewList();
 	}
 }

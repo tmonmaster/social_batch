@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.tmon.social.batch.filter.dao.mapper.NewsForFilteringMapper">
+	<select id="getNewsForFilteringList" resultType="newsForFiltering">
+		SELECT
+			news_corp_relation.news_id AS newsId,
+			news_corp_relation.corp_id AS companyId,
+			news.title AS title,
+			news_corp_relation.preview AS preview,
+			GROUP_CONCAT(keyword.keyword) AS keywordList
+		FROM
+			news_corp_relation,
+			news,
+			keyword
+		WHERE
+			keyword.corp_id = news_corp_relation.corp_id
+			AND
+			news_corp_relation.news_id = news.news_id
+		GROUP BY
+			keyword.corp_id, news.news_id
+	</select>
+</mapper>

@@ -1,18 +1,12 @@
 package kr.co.tmon.social.batch.service;
 
+import static org.junit.Assert.assertNotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import kr.co.tmon.social.batch.vo.News;
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;

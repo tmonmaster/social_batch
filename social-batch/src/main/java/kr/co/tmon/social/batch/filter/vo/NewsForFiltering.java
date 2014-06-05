@@ -1,5 +1,6 @@
 package kr.co.tmon.social.batch.filter.vo;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -7,9 +8,9 @@ import java.util.List;
  * 
  */
 public class NewsForFiltering {
-	private static final int WEIGHT_FOR_TITLE = 2;
-	private static final int WEIGHT_FOR_PREVIEW = 1;
-	
+	public static final int WEIGHT_FOR_TITLE = 2;
+	public static final int WEIGHT_FOR_PREVIEW = 1;
+
 	private String newsId;
 	private String companyId;
 	private String title;
@@ -53,8 +54,8 @@ public class NewsForFiltering {
 		return keywordList;
 	}
 
-	public void setKeywordList(List<String> keywordList) {
-		this.keywordList = keywordList;
+	public void setKeywordList(String keywordCsv) {
+		this.keywordList = Arrays.asList(keywordCsv.split(","));
 	}
 
 	public int getRelationScore() {

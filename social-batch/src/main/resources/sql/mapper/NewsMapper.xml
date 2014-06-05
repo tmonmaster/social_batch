@@ -9,7 +9,6 @@
 		INTO news(
 			link,
 			title,
-			preview,
 			image,
 			date,
 			provider		
@@ -18,7 +17,6 @@
 		<foreach collection="list" item="news" separator="), (">
 			#{news.link},
 			#{news.title},
-			#{news.preview},
 			#{news.image},
 			#{news.date},
 			#{news.provider}
@@ -29,19 +27,25 @@
 		INSERT
 		IGNORE
 		INTO news_corp_relation(
-				news_id,
-				corp_id		
+			corp_id,	
+			preview,
+			news_id
 		)
-		SELECT
-			news.news_id,
-			corporation.corp_id
-		FROM
-			news,
-			corporation
-		<where>
-			<foreach collection="list" item="news" separator=" OR ">
-				(news.date = #{news.date} AND corporation.corp_name = #{news.socialName} AND news.link = #{news.link})
-			</foreach> 
-		</where>
+		VALUES(
+		<foreach collection="list" item="news" separator="), (">
+			#{news.companyId},
+			#{news.preview},
+			(
+			SELECT
+				news_id
+			FROM
+				news
+			WHERE
+				date = #{news.date}
+			AND
+				news.link = #{news.link}
+			)
+		</foreach>
+		)
 	</insert>
 </mapper>

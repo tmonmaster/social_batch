@@ -8,22 +8,26 @@ package kr.co.tmon.social.batch.vo;
  * 
  */
 public class Keyword {
-	private String	companyName;
-	private String	companyKeyword;
+	public static final int CORE_KEYWORD = 0;
+
+	private String companyId;
+	private String companyKeyword;
+	private int keywordPriority;
 
 	public Keyword() {}
 
-	public Keyword(String companyName, String companyKeyword) {
-		this.companyName = companyName;
+	public Keyword(String companyId, String companyKeyword, int keywordPriority) {
+		this.companyId = companyId;
 		this.companyKeyword = companyKeyword;
+		this.keywordPriority = keywordPriority;
 	}
 
-	public String getCompanyName() {
-		return companyName;
+	public String getCompanyId() {
+		return companyId;
 	}
 
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
+	public void setCompanyId(String companyId) {
+		this.companyId = companyId;
 	}
 
 	public String getCompanyKeyword() {
@@ -34,9 +38,16 @@ public class Keyword {
 		this.companyKeyword = companyKeyword;
 	}
 
-	@Override
-	public String toString() {
-		return "Keyword [companyName=" + companyName + ", companyKeyword=" + companyKeyword + "]";
+	public int getKeywordPriority() {
+		return keywordPriority;
 	}
 
+	public void setKeywordPriority(int keywordPriority) {
+		this.keywordPriority = keywordPriority;
+	}
+
+	@Override
+	public String toString() {
+		return "Keyword [companyId=" + companyId + ", companyKeyword=" + companyKeyword + ", keywordPriority=" + keywordPriority + "]";
+	}
 }

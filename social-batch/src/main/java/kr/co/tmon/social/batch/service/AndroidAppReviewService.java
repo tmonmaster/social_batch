@@ -46,7 +46,7 @@ public class AndroidAppReviewService {
 	private static final int GOOGLE_JSON_STATUS_PAGE_NOT_FOUND = 3;
 
 	private static final int DEFAULT_VERSION_COVERAGE = 5;
-	private static final int DEFAULT_DATE_COVERAGE = 5;
+	private static final int DEFAULT_DATE_COVERAGE = 3;
 	private static final int END_OF_PAGE = 225;
 	private static final int TIME_MILLIS_FOR_A_DAY = 1000 * 60 * 60 * 24;
 
@@ -54,7 +54,7 @@ public class AndroidAppReviewService {
 	private static final String GOOGLE_PLAY_REQUEST_URL = "https://play.google.com/store/apps/details?id=";
 	private static final String REVIEW_REQUEST_URL = "https://play.google.com/store/getreviews";
 
-	private static final String COOKIE_GOOGLE_ABUSE_EXEMPTION = "GOOGLE_ABUSE_EXEMPTION=ID=a3084e62a725eb9b:TM=1401768429:C=c:IP=114.201.245.130-:S=APGng0tp-bRgKXyb3slFFbxpIrxp2tHA2Q";
+	private static final String COOKIE_GOOGLE_ABUSE_EXEMPTION = "GOOGLE_ABUSE_EXEMPTION=ID=17802835f9ab3ed9:TM=1401966728:C=c:IP=114.201.245.130-:S=APGng0uPwwJh7x-orN8osg3rrYzqXz4JmA";
 
 	@Autowired
 	private AppInfoDao appInfoDao;
@@ -65,7 +65,6 @@ public class AndroidAppReviewService {
 	private Logger log = Logger.getLogger(this.getClass());
 
 	private List<AppInfo> appInfoList;
-	private Date lastReviewDate;
 
 	public void insertReviewList() throws Exception {
 		appInfoList = appInfoDao.getAppInfoList();
@@ -77,15 +76,15 @@ public class AndroidAppReviewService {
 	}
 
 	private void insertReviewListForTargetApp(AppInfo appInfo) throws Exception {
-		int versionCoverage = setVersionCoverage(appInfo);
+		int latestVersionOfReview = androidAppReviewDao.getLatestVersionOfReview(appInfo.getAppId());
 
-		for (int targetAppVersion = appInfo.getGoogleAppVersion(); isInVersionCoverage(targetAppVersion, versionCoverage, appInfo); targetAppVersion--) {
-			lastReviewDate = androidAppReviewDao.getLastReviewDateFromDbForTargetVersion(appInfo.getAppId(), targetAppVersion);
-			setupReviewListAndCheckDateCoverage(appInfo, targetAppVersion);
+		for (int targetVersion = latestVersionOfReview - DEFAULT_VERSION_COVERAGE; targetVersion <= appInfo.getGoogleAppVersion(); targetVersion++) {
+			Date lastReviewDate = androidAppReviewDao.getLastReviewDateFromDbForTargetVersion(appInfo.getAppId(), targetVersion);
+			insertReviewListForTargetVersion(targetVersion, lastReviewDate, appInfo);
 		}
 	}
 
-	private void setupReviewListAndCheckDateCoverage(AppInfo appInfo, int targetAppVersion) throws Exception, JSONException, ParseException {
+	private void insertReviewListForTargetVersion(int targetAppVersion, Date lastReviewDate, AppInfo appInfo) throws Exception, JSONException, ParseException {
 		for (int pageNum = 0; pageNum <= END_OF_PAGE; pageNum++) {
 			List<AndroidAppReview> reviewList = new ArrayList<AndroidAppReview>();
 
@@ -104,7 +103,7 @@ public class AndroidAppReviewService {
 				Element reviewDate = reviewElement.select(".review-date").first();
 				Date parsedDate = new SimpleDateFormat("yyyy년 M월 d일").parse(reviewDate.ownText());
 
-				if (isInDateCoverage(reviewDate, parsedDate) == false) {
+				if (isInDateCoverage(reviewDate, parsedDate, lastReviewDate) == false) {
 					insertReviewList(reviewList);
 					return;
 				}
@@ -142,7 +141,7 @@ public class AndroidAppReviewService {
 			androidAppReviewDao.insertAndroidAppReviewList(reviewList);
 	}
 
-	private boolean isInDateCoverage(Element reviewDate, Date parsedDate) throws ParseException {
+	private boolean isInDateCoverage(Element reviewDate, Date parsedDate, Date lastReviewDate) throws ParseException {
 		if (lastReviewDate == null)
 			return true;
 
@@ -209,19 +208,6 @@ public class AndroidAppReviewService {
 		return httpConnectionForReview;
 	}
 
-	private boolean isInVersionCoverage(int targetAppVersion, int versionCoverage, AppInfo appInfo) {
-		return targetAppVersion > 0 && appInfo.getGoogleAppVersion() - targetAppVersion <= versionCoverage;
-	}
-
-	private int setVersionCoverage(AppInfo appInfo) {
-		int lastReviewVersion = androidAppReviewDao.getLastReviewVersion(appInfo.getAppId());
-
-		if (appInfo.getGoogleAppVersion() - lastReviewVersion > DEFAULT_DATE_COVERAGE)
-			return appInfo.getGoogleAppVersion() - lastReviewVersion;
-
-		return DEFAULT_VERSION_COVERAGE;
-	}
-
 	private void checkLatestVersion(AppInfo appInfo) throws Exception {
 		AppInfo appInfoFromGoogle = getLatestInfoFromGoogle(appInfo.getAppId());
 
@@ -242,7 +228,7 @@ public class AndroidAppReviewService {
 	private AppInfo parseAppInfoFromDocument(String appId, AppInfo latestAppInfo, Document googlePlayDocument) {
 		Element averageScore = googlePlayDocument.select(".score").first();
 		appInfoDao.updateAverageScore(appId, averageScore.text());
-		
+
 		Element appVersion = googlePlayDocument.select("div[itemprop=softwareVersion]").first();
 		Element googleAppVersion = googlePlayDocument.select("div .dropdown-child").last();
 

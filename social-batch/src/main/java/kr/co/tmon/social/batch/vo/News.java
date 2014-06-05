@@ -5,7 +5,7 @@ package kr.co.tmon.social.batch.vo;
  * 
  */
 public class News {
-	private String socialName;
+	private String companyId;
 	private String title;
 	private String preview;
 	private String image;
@@ -15,8 +15,9 @@ public class News {
 
 	public News() {}
 
-	public News(String socialName, String title, String preview, String image, String date, String link, String provider) {
-		this.socialName = socialName;
+	public News(String companyId, String title, String preview, String image, String date, String link, String provider) {
+		super();
+		this.companyId = companyId;
 		this.title = title;
 		this.preview = preview;
 		this.image = image;
@@ -25,12 +26,12 @@ public class News {
 		this.provider = provider;
 	}
 
-	public String getSocialName() {
-		return socialName;
+	public String getCompanyId() {
+		return companyId;
 	}
 
-	public void setSocialName(String socialName) {
-		this.socialName = socialName;
+	public void setCompanyId(String companyId) {
+		this.companyId = companyId;
 	}
 
 	public String getTitle() {
@@ -83,7 +84,6 @@ public class News {
 
 	@Override
 	public String toString() {
-		return "NaverNews [socialName=" + socialName + ", title=" + title + ", preview=" + preview + ", image=" + image + ", date=" + date + ", link=" + link + ", provider=" + provider + "]";
+		return "News [companyId=" + companyId + ", title=" + title + ", preview=" + preview + ", image=" + image + ", date=" + date + ", link=" + link + ", provider=" + provider + "]";
 	}
-
 }

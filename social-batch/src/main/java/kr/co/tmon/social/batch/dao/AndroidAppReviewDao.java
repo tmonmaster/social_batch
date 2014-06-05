@@ -14,9 +14,7 @@ import org.springframework.stereotype.Repository;
  * 
  * @author Yunho Lee (forfle@tmon.co.kr)
  * 
- *         안드로이드 앱 리뷰를 DB에 넣는다.
- *         앱 버전별 가장 최근 리뷰의 DATE를 가져온다.
- *         가장 최근 리뷰의 앱 버전정보를 가져온다.
+ *         안드로이드 앱 리뷰를 DB에 넣는다. 앱 버전별 가장 최근 리뷰의 DATE를 가져온다. 가장 최근 리뷰의 앱 버전정보를 가져온다.
  * 
  */
 @Repository
@@ -36,7 +34,12 @@ public class AndroidAppReviewDao {
 		return sqlSession.selectOne(ANDROID_APP_REVIEW_MAPPER + "getLastReviewDate", appInfo);
 	}
 
-	public int getLastReviewVersion(String appId) {
-		return sqlSession.selectOne(ANDROID_APP_REVIEW_MAPPER + "getLastReviewVersion", appId);
+	public int getLatestVersionOfReview(String appId) {
+		Integer lastReviewVersion = sqlSession.selectOne(ANDROID_APP_REVIEW_MAPPER + "getLatestVersionOfReview", appId);
+
+		if (lastReviewVersion == null)
+			return 1;
+
+		return lastReviewVersion;
 	}
 }

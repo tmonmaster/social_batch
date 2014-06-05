@@ -54,7 +54,8 @@ public class NaverNewsService {
 		List<News> newsList = new ArrayList<News>();
 
 		for (Keyword keyword : keywordList)
-			addNewsListFromKeyword(newsList, keyword);
+			if (keyword.getKeywordPriority() == Keyword.CORE_KEYWORD)
+				addNewsListFromKeyword(newsList, keyword);
 
 		return newsList;
 	}
@@ -66,10 +67,10 @@ public class NaverNewsService {
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
 		Document document = documentBuilder.parse(newsRssPath);
 
-		addNewsListFromXml(newsList, document, keyword.getCompanyName());
+		addNewsListFromXml(newsList, document, keyword.getCompanyId());
 	}
 
-	private void addNewsListFromXml(List<News> newsList, Document document, String companyName) throws Exception {
+	private void addNewsListFromXml(List<News> newsList, Document document, String companyId) throws Exception {
 		Element tagValueRoot = document.getDocumentElement();
 		NodeList tagValueNodeList = tagValueRoot.getElementsByTagName(ITEM);
 		NodeList attributeNodeList = tagValueRoot.getElementsByTagName(THUMBNAIL);
@@ -78,7 +79,7 @@ public class NaverNewsService {
 			Element element = (Element) tagValueNodeList.item(index);
 			NamedNodeMap attributeMap = attributeNodeList.item(index).getAttributes();
 
-			newsList.add(new News(companyName, getItem(element, TITLE), getItem(element, DESCRIPTION), attributeMap.item(0).getNodeValue(), convertDateFormat(element), getItem(element, LINK), getItem(element, AUTHOR)));
+			newsList.add(new News(companyId, getItem(element, TITLE), getItem(element, DESCRIPTION), attributeMap.item(0).getNodeValue(), convertDateFormat(element), getItem(element, LINK), getItem(element, AUTHOR)));
 		}
 	}
 

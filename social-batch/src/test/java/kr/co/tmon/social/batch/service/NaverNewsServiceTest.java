@@ -36,10 +36,9 @@ public class NaverNewsServiceTest {
 	@Test
 	public void parsingTest() throws Exception {
 		List<Keyword> keywordList = new ArrayList<>();
-		keywordList.add(new Keyword("티켓몬스터", "티몬"));
-		keywordList.add(new Keyword("티켓몬스터", "티켓몬스터"));
-		keywordList.add(new Keyword("쿠팡", "쿠팡"));
-		keywordList.add(new Keyword("위메프", "위메프"));
+		keywordList.add(new Keyword("12", "티몬", 0));
+		keywordList.add(new Keyword("13", "쿠팡", 0));
+		keywordList.add(new Keyword("14", "위메프", 0));
 
 		when(keywordDao.getKeywordList()).thenReturn(keywordList);
 

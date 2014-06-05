@@ -6,12 +6,10 @@
 <mapper namespace="kr.co.tmon.social.batch.dao.mapper.Keyword">
 	<select id="getKeyword" resultType="keyword">
 		SELECT
-			corp_name AS 'companyName',
-			keyword AS 'companyKeyword'
+			corp_id AS companyId,
+			keyword AS companyKeyword,
+			keyword_priority AS keywordPriority
 		FROM
-			keyword,
-			corporation
-		WHERE
-			keyword.corp_id = corporation.corp_id
+			keyword
 	</select>
 </mapper>

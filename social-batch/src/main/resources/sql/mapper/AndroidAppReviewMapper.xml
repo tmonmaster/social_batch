@@ -51,7 +51,7 @@
 			google_app_version = #{googleAppVersion}
 	</select>
 	
-	<select id="getLastReviewVersion" parameterType="string" resultType="int">
+	<select id="getLatestVersionOfReview" parameterType="string" resultType="int" >
 		SELECT
 			MAX(google_app_version)
 		FROM

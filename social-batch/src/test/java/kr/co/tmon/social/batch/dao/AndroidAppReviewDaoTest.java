@@ -52,8 +52,8 @@ public class AndroidAppReviewDaoTest {
 		}
 
 	@Test
-	public void testGetLastReviewVersion() throws Exception {
-		System.out.println(androidAppReviewDao.getLastReviewVersion("com.tmon"));
-	}
+		public void testGetLatestVersionOfReview() throws Exception {
+			System.out.println(androidAppReviewDao.getLatestVersionOfReview("com.tmon"));
+		}
 
 }

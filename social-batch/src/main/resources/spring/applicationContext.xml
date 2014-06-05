@@ -11,7 +11,7 @@
 	<!-- PropertyPlaceholderConfigurer로 로드된 resource 는 ${ }로 접근 가능 -->
 	<bean id="propertyConfigurer"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location" value="classpath:spring/jdbc.properties"></property>
+		<property name="location" value="classpath:sql/jdbc.properties"></property>
 	</bean>
 
 	<!-- DataSource -->

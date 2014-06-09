@@ -34,7 +34,7 @@ public class FilteringServiceTest {
 		newsForFilteringTmon.setNewsId("30281");
 		newsForFilteringTmon.setCompanyId("12");
 		newsForFilteringTmon.setTitle("1929 소비자 \"e-몰•명동•가로수길 즐겨 찾는다\"");
-		newsForFilteringTmon.setPreview("특히 가장 선호하는 온라인 쇼핑몰 순위에는 지난해 순위에 없던 티몬과 쿠팡 등 소셜커머스가 상위권을... 쿠팡, 티몬, 위메프 등 소셜 커머스 족들도 크게 늘었다는 점이 흥미롭다. '온라인 쇼핑을 선호하는 이유'에...");
+		newsForFilteringTmon.setPreview("티켓몬스터 홈페이지에서 1봉지당 2550원에 판매 중이다. 삼성테크윈, 보안시스템 스페인 수출 삼성테크윈은 스페인의 가정용 보안 서비스업체인 시큐리타스 다이렉트와 영상감시카메라 20만대 및 보안 시스템 운용에...티켓몬스터");
 		newsForFilteringTmon.setKeywordList("ticketmonster,tmon,신현성,티몬,티켓몬스터");
 		newsForFilteringList.add(newsForFilteringTmon);
 
@@ -50,8 +50,29 @@ public class FilteringServiceTest {
 		when(newsForFilteringDao.updateRelationScoreList(newsForFilteringList)).thenReturn(2);
 
 		int insertedRow = filteringService.startNewsFiltering(date);
-
+		System.out.println(newsForFilteringTmon.getKeywordList());
+		System.out.println(wordCount(newsForFilteringTmon.getPreview(), newsForFilteringTmon.getKeywordList()));
 		System.out.println(insertedRow);
 		assertEquals(2, insertedRow);
+	}
+
+	private int wordCount(String text, List<String> keywordList) {
+		int wordCount = 0;
+
+		for (String keyword : keywordList) {
+			int index = 0;
+
+			while (true) {
+				index = text.indexOf(keyword, index);
+
+				if (index == -1)
+					break;
+
+				index += keyword.length();
+				wordCount++;
+			}
+		}
+
+		return wordCount;
 	}
 }

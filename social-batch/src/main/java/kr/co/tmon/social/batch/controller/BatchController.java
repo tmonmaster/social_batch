@@ -7,24 +7,28 @@ import kr.co.tmon.social.batch.service.NaverNewsService;
 import kr.co.tmon.social.batch.service.NewsService;
 import kr.co.tmon.social.batch.vo.News;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 
 /**
  * @author raspilla16@tmon.co.kr
  * 
  */
+@Controller
 public class BatchController {
-	public static void main(String[] args) throws Exception {
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:/spring/applicationContext.xml");
+	@Autowired
+	private NaverNewsService naverNewsService;
+	@Autowired
+	private NewsService newsService;
+	@Autowired
+	private AndroidAppReviewService androidAppReviewService;
 
-		NaverNewsService naverNewsService = applicationContext.getBean("naverNewsService", NaverNewsService.class);
+	public void doNewsBatch() throws Exception {
 		List<News> newsList = naverNewsService.getNewsList();
-
-		NewsService newsService = applicationContext.getBean("newsService", NewsService.class);
 		newsService.insertNewsList(newsList);
+	}
 
-		AndroidAppReviewService googleReviewService = applicationContext.getBean("androidAppReviewService", AndroidAppReviewService.class);
-		googleReviewService.insertReviewList();
+	public void doAndroidReviewBatch() throws Exception {
+		androidAppReviewService.insertReviewList();
 	}
 }

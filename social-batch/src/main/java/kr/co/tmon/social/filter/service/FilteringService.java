@@ -1,5 +1,6 @@
 package kr.co.tmon.social.filter.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import kr.co.tmon.social.filter.dao.NewsForFilteringDao;
@@ -19,15 +20,16 @@ import org.springframework.stereotype.Service;
 public class FilteringService {
 	private static final int DEFAULT_WEIGHT_FOR_TITLE = 5;
 	private static final int DEFAULT_WEIGHT_FOR_PREVIEW = 1;
-	private static final int NO_OCCURRENCE = -1;
+	private static final int END_OF_INDEX = -1;
 
 	private Logger log = Logger.getLogger(this.getClass());
-	
+
 	@Autowired
 	private NewsForFilteringDao newsForFilteringDao;
 
 	public int startNewsFiltering(String date) throws Exception {
 		List<NewsForFiltering> filteredNewsList = newsForFilteringDao.getNewsForFilteringList(date);
+		List<NewsForFiltering> newsListToDelete = new ArrayList<NewsForFiltering>();
 
 		int titleRelationScore = 0;
 		int previewRelationScore = 0;
@@ -38,7 +40,17 @@ public class FilteringService {
 			previewRelationScore = wordCount(newsForFiltering.getPreview(), newsForFiltering.getKeywordList()) * DEFAULT_WEIGHT_FOR_PREVIEW;
 			totalRelationScore = titleRelationScore + previewRelationScore;
 			newsForFiltering.setRelationScore(totalRelationScore);
+
+			if (totalRelationScore == 0)
+				newsListToDelete.add(newsForFiltering);
 			log.info(newsForFiltering);
+		}
+
+		filteredNewsList.removeAll(newsListToDelete);
+
+		if (newsListToDelete.size() != 0) {
+			newsForFilteringDao.deleteRelationList(newsListToDelete);
+			newsForFilteringDao.deleteNewsList(newsListToDelete);
 		}
 
 		return newsForFilteringDao.updateRelationScoreList(filteredNewsList);
@@ -51,11 +63,12 @@ public class FilteringService {
 			int index = 0;
 
 			while (true) {
-				index = text.indexOf(keyword, index + keyword.length());
+				index = text.indexOf(keyword, index);
 
-				if (index == NO_OCCURRENCE)
+				if (index == END_OF_INDEX)
 					break;
 
+				index += keyword.length();
 				wordCount++;
 			}
 		}

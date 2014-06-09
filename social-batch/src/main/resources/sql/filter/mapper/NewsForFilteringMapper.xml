@@ -36,8 +36,29 @@
 				corp_id = #{newsForFiltering.companyId}
 			THEN
 				#{newsForFiltering.relationScore}
+			
 		</foreach>
-			END
+		ELSE
+			relation_score
+		END
 		
 	</update>
+	
+	<delete id="deleteRelationList" parameterType="list">
+		DELETE FROM
+			news_corp_relation
+		WHERE
+		<foreach collection="list" item="newsForFiltering" separator=" OR ">
+			( news_id = #{newsForFiltering.newsId} AND corp_id = #{newsForFiltering.companyId} ) 
+		</foreach> 
+	</delete>
+	
+	<delete id="deleteNewsList" parameterType="list">
+		DELETE FROM
+			news
+		WHERE
+		<foreach collection="list" item="newsForFiltering" separator=" OR ">
+			news_id = #{newsForFiltering.newsId}
+		</foreach>
+	</delete>
 </mapper>

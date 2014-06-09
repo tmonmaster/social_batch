@@ -40,7 +40,9 @@
 		<constructor-arg ref="sqlSessionFactoryBean" />
 	</bean>
 
-
+	<!-- Controller, Service, Repository, Component Annotation -->
 	<context:component-scan base-package="kr.co.tmon.social" />
 
+	<!-- Task, Executor, Scheduler -->
+	<task:scheduler id="taskScheduler" pool-size="10"/>
 </beans>

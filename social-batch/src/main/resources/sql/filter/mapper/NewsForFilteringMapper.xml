@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="kr.co.tmon.social.batch.filter.dao.mapper.NewsForFilteringMapper">
-	<select id="getNewsForFilteringList" resultType="newsForFiltering">
+	<select id="getNewsForFilteringList" parameterType="string" resultType="newsForFiltering">
 		SELECT
 			news_corp_relation.news_id AS newsId,
 			news_corp_relation.corp_id AS companyId,
@@ -18,7 +18,26 @@
 			keyword.corp_id = news_corp_relation.corp_id
 			AND
 			news_corp_relation.news_id = news.news_id
+			AND
+			news.date >= #{date}
 		GROUP BY
 			keyword.corp_id, news.news_id
 	</select>
+	
+	<update id="updateRelationScoreList" parameterType="list">
+		UPDATE
+			news_corp_relation
+		SET			
+			relation_score = CASE
+		<foreach collection="list" item="newsForFiltering">
+			WHEN
+				news_id = #{newsForFiltering.newsId}
+			AND
+				corp_id = #{newsForFiltering.companyId}
+			THEN
+				#{newsForFiltering.relationScore}
+		</foreach>
+			END
+		
+	</update>
 </mapper>

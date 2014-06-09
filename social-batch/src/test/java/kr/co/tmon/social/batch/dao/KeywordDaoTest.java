@@ -7,8 +7,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 /**
  * 
  * @author 강이경
- *
- *  키워드 정보 출력 테스트
+ * 
+ *         키워드 정보 출력 테스트
  */
 public class KeywordDaoTest {
 
@@ -18,5 +18,4 @@ public class KeywordDaoTest {
 		KeywordDao keywordDao = (KeywordDao) context.getBean("keywordDao");
 		System.out.println(keywordDao.getKeywordList());
 	}
-	
 }

@@ -32,7 +32,8 @@
 
 	<!-- SqlSessionFactory -->
 	<bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean"
-		p:dataSource-ref="dataSource" p:configLocation="classpath:sql/sql-map-config.xml" />
+		p:dataSource-ref="dataSource"
+		p:configLocation="classpath:sql/mybatis-config.xml"/>
 
 	<!-- SqlSession -->
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
@@ -40,6 +41,6 @@
 	</bean>
 
 
-	<context:component-scan base-package="kr.co.tmon.social.batch" />
+	<context:component-scan base-package="kr.co.tmon.social" />
 
 </beans>

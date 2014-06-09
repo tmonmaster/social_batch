@@ -1,4 +1,4 @@
-package kr.co.tmon.social.batch.filter.vo;
+package kr.co.tmon.social.filter.vo;
 
 import java.util.Arrays;
 import java.util.List;

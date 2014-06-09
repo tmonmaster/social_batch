@@ -12,15 +12,15 @@
 		<typeAlias type="kr.co.tmon.social.batch.vo.News" alias="news"/>
 		<typeAlias type="kr.co.tmon.social.batch.vo.AppInfo" alias="appInfo"/>
 		<typeAlias type="kr.co.tmon.social.batch.vo.AndroidAppReview" alias="androidAppReview"/>
-		<typeAlias type="kr.co.tmon.social.batch.filter.vo.NewsForFiltering" alias="newsForFiltering"/>
+		<typeAlias type="kr.co.tmon.social.filter.vo.NewsForFiltering" alias="newsForFiltering"/>
 	</typeAliases>
 
 	<!-- SQL Definition :: file include -->
 	<mappers>
-		<mapper resource="sql/mapper/KeywordMapper.xml" />
-		<mapper resource="sql/mapper/NewsMapper.xml" />
-		<mapper resource="sql/mapper/AppInfoMapper.xml" />		
-		<mapper resource="sql/mapper/AndroidAppReviewMapper.xml" />		
+		<mapper resource="sql/batch/mapper/KeywordMapper.xml" />
+		<mapper resource="sql/batch/mapper/NewsMapper.xml" />
+		<mapper resource="sql/batch/mapper/AppInfoMapper.xml" />		
+		<mapper resource="sql/batch/mapper/AndroidAppReviewMapper.xml" />		
 		<mapper resource="sql/filter/mapper/NewsForFilteringMapper.xml" />		
 	</mappers>
 

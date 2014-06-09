@@ -8,9 +8,6 @@ import java.util.List;
  * 
  */
 public class NewsForFiltering {
-	public static final int WEIGHT_FOR_TITLE = 2;
-	public static final int WEIGHT_FOR_PREVIEW = 1;
-
 	private String newsId;
 	private String companyId;
 	private String title;

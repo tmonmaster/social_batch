@@ -22,6 +22,7 @@ public class MainApp {
 
 	private static final int MINUTE = 1000 * 60;
 	private static final int HOUR = 1000 * 60 * 60;
+	private static final int DAY = 1000 * 60 * 60 * 24;
 
 	private static final ApplicationContext applicationContext;
 	private static final TaskScheduler scheduler;
@@ -70,17 +71,23 @@ public class MainApp {
 	}
 
 	private static class FilteringTask implements Runnable {
+		private static final int DEFAULT_DAY_COVERAGE = 3;
+
 		@Override
 		public void run() {
 			try {
-				filteringController.applyFilter(getCurrentTimeString());
+				filteringController.applyFilter(getStartTime());
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 		}
 
-		private String getCurrentTimeString() {
-			return new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+		private String getStartTime() {
+			return new SimpleDateFormat("yyyy-MM-dd").format(new Date(getTargetDate()));
+		}
+
+		private long getTargetDate() {
+			return System.currentTimeMillis() - DAY * DEFAULT_DAY_COVERAGE;
 		}
 	}
 }

@@ -321,7 +321,7 @@
 			<version>[4.0,)</version>
 		</dependency>
 
-		<!-- Elastic Search -->
+		<!-- Elastic Search & Lucene -->
 		<dependency>
 			<groupId>org.elasticsearch</groupId>
 			<artifactId>elasticsearch</artifactId>

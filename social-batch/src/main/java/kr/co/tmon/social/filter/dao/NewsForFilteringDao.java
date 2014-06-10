@@ -36,10 +36,16 @@ public class NewsForFilteringDao {
 	}
 
 	public int updateRelationScoreList(List<NewsForFiltering> newsForFilteringList) {
+		if (newsForFilteringList.size() == 0)
+			return 0;
+
 		return sqlSession.update(NEWS_FOR_FILTERING + "updateRelationScoreList", newsForFilteringList);
 	}
 
 	public int deleteRelationList(List<NewsForFiltering> newsListToDelete) {
+		if (newsListToDelete.size() == 0)
+			return 0;
+
 		return sqlSession.delete(NEWS_FOR_FILTERING + "deleteRelationList", newsListToDelete);
 	}
 
@@ -47,6 +53,9 @@ public class NewsForFilteringDao {
 	 * @param newsListToDelete
 	 */
 	public int deleteNewsList(List<NewsForFiltering> newsListToDelete) {
+		if (newsListToDelete.size() == 0)
+			return 0;
+
 		return sqlSession.delete(NEWS_FOR_FILTERING + "deleteNewsList", newsListToDelete);
 	}
 }

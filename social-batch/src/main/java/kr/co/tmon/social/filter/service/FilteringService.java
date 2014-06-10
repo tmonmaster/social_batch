@@ -48,11 +48,6 @@ public class FilteringService {
 
 		filteredNewsList.removeAll(newsListToDelete);
 
-		if (newsListToDelete.size() != 0) {
-			newsForFilteringDao.deleteRelationList(newsListToDelete);
-			newsForFilteringDao.deleteNewsList(newsListToDelete);
-		}
-
 		return newsForFilteringDao.updateRelationScoreList(filteredNewsList);
 	}
 

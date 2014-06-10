@@ -17,72 +17,70 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
  */
 public class MainApp {
 
+	private static final int DEFAULT_MINUTE_FOR_NEWS = 10;
+	private static final int DEFAULT_HOUR_FOR_REVIEW = 12;
+
 	private static final int MINUTE = 1000 * 60;
 	private static final int HOUR = 1000 * 60 * 60;
 
-	public static void main(String[] args) throws Exception {
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring/applicationContext.xml");
-		TaskScheduler scheduler = applicationContext.getBean("taskScheduler", ThreadPoolTaskScheduler.class);
-		BatchController batchController = applicationContext.getBean("batchController", BatchController.class);
-		FilteringController filteringController = applicationContext.getBean("filteringController", FilteringController.class);
+	private static final ApplicationContext applicationContext;
+	private static final TaskScheduler scheduler;
+	private static final BatchController batchController;
+	private static final FilteringController filteringController;
 
-		Runnable newsBatchTask = makeNewsBatchTask(batchController);
-		Runnable androidReviewTask = makeAndroidReviewBatchTask(batchController);
-		Runnable filteringTask = makeFilteringTask(filteringController);
+	static {
+		applicationContext = new ClassPathXmlApplicationContext("classpath:spring/applicationContext.xml");
+		scheduler = applicationContext.getBean("taskScheduler", ThreadPoolTaskScheduler.class);
+		batchController = applicationContext.getBean("batchController", BatchController.class);
+		filteringController = applicationContext.getBean("filteringController", FilteringController.class);
+	}
+
+	public static void main(String[] args) throws Exception {
+		Runnable newsBatchTask = new NewsBatchTask();
+		Runnable androidReviewTask = new AndroidReviewBatchTask();
+		Runnable filteringTask = new FilteringTask();
 
 		Date currentDate = new Date();
 
-		scheduler.scheduleWithFixedDelay(newsBatchTask, currentDate, MINUTE * 10);
-		scheduler.scheduleWithFixedDelay(filteringTask, currentDate, MINUTE * 10);
-		scheduler.scheduleWithFixedDelay(androidReviewTask, currentDate, HOUR * 12);
+		scheduler.scheduleWithFixedDelay(newsBatchTask, currentDate, MINUTE * DEFAULT_MINUTE_FOR_NEWS);
+		scheduler.scheduleWithFixedDelay(filteringTask, currentDate, MINUTE * DEFAULT_MINUTE_FOR_NEWS);
+		scheduler.scheduleWithFixedDelay(androidReviewTask, currentDate, HOUR * DEFAULT_HOUR_FOR_REVIEW);
 	}
 
-	private static Runnable makeNewsBatchTask(final BatchController batchController) {
-		Runnable newsBatchRun = new Runnable() {
-			@Override
-			public void run() {
-				try {
-					batchController.doNewsBatch();
-				} catch (Exception e) {
-					throw new RuntimeException("뉴스배치작업", e);
-				}
+	private static class NewsBatchTask implements Runnable {
+		@Override
+		public void run() {
+			try {
+				batchController.doNewsBatch();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
 			}
-		};
-
-		return newsBatchRun;
+		}
 	}
 
-	private static Runnable makeAndroidReviewBatchTask(final BatchController batchController) {
-		Runnable androidReviewTask = new Runnable() {
-
-			@Override
-			public void run() {
-				try {
-					batchController.doAndroidReviewBatch();
-				} catch (Exception e) {
-					throw new RuntimeException("안드로이드 리뷰 배치", e);
-				}
+	private static class AndroidReviewBatchTask implements Runnable {
+		@Override
+		public void run() {
+			try {
+				batchController.doAndroidReviewBatch();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
 			}
-		};
-		return androidReviewTask;
+		}
 	}
 
-	private static Runnable makeFilteringTask(final FilteringController filteringController) {
-		Runnable filteringTask = new Runnable() {
-
-			@Override
-			public void run() {
-				try {
-					filteringController.applyFilter(getCurrentTimeString());
-				} catch (Exception e) {
-					throw new RuntimeException("필터링", e);
-				}
+	private static class FilteringTask implements Runnable {
+		@Override
+		public void run() {
+			try {
+				filteringController.applyFilter(getCurrentTimeString());
+			} catch (Exception e) {
+				throw new RuntimeException(e);
 			}
+		}
 
-			private String getCurrentTimeString() {
-				return new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-			}
-		};
-		return filteringTask;
+		private String getCurrentTimeString() {
+			return new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+		}
 	}
 }

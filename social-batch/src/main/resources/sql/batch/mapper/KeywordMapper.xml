@@ -11,5 +11,8 @@
 			keyword_priority AS keywordPriority
 		FROM
 			keyword
+		ORDER BY
+			keyword
+		DESC
 	</select>
 </mapper>

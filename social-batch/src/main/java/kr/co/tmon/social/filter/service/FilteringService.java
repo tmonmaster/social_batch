@@ -6,7 +6,6 @@ import java.util.List;
 import kr.co.tmon.social.filter.dao.NewsForFilteringDao;
 import kr.co.tmon.social.filter.vo.NewsForFiltering;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +17,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class FilteringService {
+	public static final String FILTER_ALL = "all";
 	private static final int DEFAULT_WEIGHT_FOR_TITLE = 5;
 	private static final int DEFAULT_WEIGHT_FOR_PREVIEW = 1;
 	private static final int END_OF_INDEX = -1;
-
-	private Logger log = Logger.getLogger(this.getClass());
 
 	@Autowired
 	private NewsForFilteringDao newsForFilteringDao;
@@ -43,10 +41,12 @@ public class FilteringService {
 
 			if (totalRelationScore == 0)
 				newsListToDelete.add(newsForFiltering);
-			log.info(newsForFiltering);
 		}
 
 		filteredNewsList.removeAll(newsListToDelete);
+
+		newsForFilteringDao.deleteRelationList(newsListToDelete);
+		newsForFilteringDao.deleteNewsList(newsListToDelete);
 
 		return newsForFilteringDao.updateRelationScoreList(filteredNewsList);
 	}

@@ -8,6 +8,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import twitter4j.Logger;
+
 /**
  * @author 정승현 (raspilla16@tmon.co.kr)
  * 
@@ -24,6 +26,10 @@ public class NewsDao {
 	}
 
 	public int insertRelationList(List<News> newsList) {
+		for (News news : newsList) {
+			Logger.getLogger(this.getClass()).info(news.getCompanyId() + " // " + news.getDate() + " // " + news.getPreview());
+		}
+
 		return sqlSession.insert(NEWS_MAPPER + "insertRelationList", newsList);
 	}
 }

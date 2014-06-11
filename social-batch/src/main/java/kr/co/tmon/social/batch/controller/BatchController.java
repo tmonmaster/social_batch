@@ -32,6 +32,7 @@ public class BatchController {
 
 	public void doNewsBatch() throws Exception {
 		List<News> newsList = naverNewsService.getNewsList();
+
 		newsService.insertNewsList(newsList);
 
 		newsFilteringService.startNewsFiltering(FilteringConstant.FILTER_ALL);

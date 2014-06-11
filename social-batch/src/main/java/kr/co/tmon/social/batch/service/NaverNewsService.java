@@ -1,6 +1,5 @@
 package kr.co.tmon.social.batch.service;
 
-import java.net.URLEncoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,7 +60,7 @@ public class NaverNewsService {
 	}
 
 	private void addNewsListFromKeyword(List<News> newsList, Keyword keyword) throws Exception {
-		String newsRssPath = URL + URLEncoder.encode(keyword.getCompanyKeyword(), "UTF-8");
+		String newsRssPath = URL + keyword.getCompanyKeyword();
 
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();

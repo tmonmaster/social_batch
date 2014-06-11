@@ -35,6 +35,18 @@ public class NewsForFilteringDao {
 		return sqlSession.selectList(NEWS_FOR_FILTERING + "getNewsForFilteringList", date);
 	}
 
+	public List<NewsForFiltering> getSingleNewsForFilteringList(String date) throws Exception {
+		if (date == null)
+			date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+
+		else if (date.equals(FilteringController.FILTER_ALL))
+			date = BEGINNIG_DATE;
+
+		List<NewsForFiltering> singleNewsList = sqlSession.selectList(NEWS_FOR_FILTERING + "getSingleNewsForFilteringList", date);
+
+		return singleNewsList;
+	}
+
 	public int updateRelationScoreList(List<NewsForFiltering> newsForFilteringList) {
 		if (newsForFilteringList.size() == 0)
 			return 0;

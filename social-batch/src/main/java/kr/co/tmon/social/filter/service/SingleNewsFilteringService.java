@@ -23,16 +23,17 @@ public class SingleNewsFilteringService {
 	@Autowired
 	private NewsForFilteringDao newsForFilteringDao;
 
-	List<NewsForFiltering> getSingleNewsListBy(String date) throws Exception {
+	public int startSingleNewsFiltering(String date) throws Exception {
 		List<NewsForFiltering> singleNewsList = new ArrayList<NewsForFiltering>();
 		singleNewsList = newsForFilteringDao.getSingleNewsForFilteringList(date);
-		return singleNewsList;
+
+		return applyAdditionalRelationScore(singleNewsList);
 	}
 
-	void applyAdditionalRelationScore(List<NewsForFiltering> singleNewsList) {
-		for (NewsForFiltering singleNews : singleNewsList) {
+	private int applyAdditionalRelationScore(List<NewsForFiltering> singleNewsList) {
+		for (NewsForFiltering singleNews : singleNewsList)
 			singleNews.setRelationScore(singleNews.getRelationScore() + ADDITIONAL_RELATION_SCORE);
-		}
-		newsForFilteringDao.updateRelationScoreList(singleNewsList);
+
+		return newsForFilteringDao.updateRelationScoreList(singleNewsList);
 	}
 }

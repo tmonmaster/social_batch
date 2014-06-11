@@ -16,8 +16,7 @@ import org.springframework.stereotype.Service;
  * 
  */
 @Service
-public class FilteringService {
-	public static final String FILTER_ALL = "all";
+public class NewsFilteringService {
 	private static final int DEFAULT_WEIGHT_FOR_TITLE = 5;
 	private static final int DEFAULT_WEIGHT_FOR_PREVIEW = 1;
 	private static final int END_OF_INDEX = -1;

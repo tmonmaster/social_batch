@@ -16,13 +16,13 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
-public class FilteringServiceTest {
+public class NewsFilteringServiceTest {
 
 	@Mock
 	private NewsForFilteringDao newsForFilteringDao;
 
 	@InjectMocks
-	private FilteringService filteringService;
+	private NewsFilteringService filteringService;
 
 	@Test
 	public void 필터링테스트() throws Exception {

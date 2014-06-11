@@ -42,14 +42,10 @@ public class SingleNewsFilteringServiceTest {
 		dummySingleNewsList.get(0).getRelationScore();
 
 		when(newsForFilteringDao.getSingleNewsForFilteringList(anyString())).thenReturn(dummySingleNewsList);
+		when(newsForFilteringDao.updateRelationScoreList(dummySingleNewsList)).thenReturn(dummySingleNewsList.size());
 
-		List<NewsForFiltering> actualSingleNewsList = singleNewsFilteringService.getSingleNewsListBy(anyString());
-		singleNewsFilteringService.applyAdditionalRelationScore(actualSingleNewsList);
+		int updatedRow = singleNewsFilteringService.startSingleNewsFiltering(anyString());
 
-		assertEquals(dummySingleNewsList.size(), actualSingleNewsList.size());
-
-		for (int index = 0; index < actualSingleNewsList.size(); index++) {
-			assertEquals(SingleNewsFilteringService.ADDITIONAL_RELATION_SCORE, actualSingleNewsList.get(index).getRelationScore());
-		}
+		assertEquals(dummySingleNewsList.size(), updatedRow);
 	}
 }

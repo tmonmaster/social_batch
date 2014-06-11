@@ -4,7 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import kr.co.tmon.social.filter.controller.FilteringController;
+import kr.co.tmon.social.filter.constant.FilteringConstant;
 import kr.co.tmon.social.filter.vo.NewsForFiltering;
 
 import org.apache.ibatis.session.SqlSession;
@@ -17,9 +17,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public class NewsForFilteringDao {
-
 	private static final String BEGINNIG_DATE = "0000-00-00";
-
 	private static final String NEWS_FOR_FILTERING = "kr.co.tmon.social.batch.filter.dao.mapper.NewsForFilteringMapper.";
 
 	@Autowired
@@ -29,7 +27,7 @@ public class NewsForFilteringDao {
 		if (date == null)
 			date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
-		else if (date.equals(FilteringController.FILTER_ALL))
+		else if (date.equals(FilteringConstant.FILTER_ALL))
 			date = BEGINNIG_DATE;
 
 		return sqlSession.selectList(NEWS_FOR_FILTERING + "getNewsForFilteringList", date);
@@ -39,7 +37,7 @@ public class NewsForFilteringDao {
 		if (date == null)
 			date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
 
-		else if (date.equals(FilteringController.FILTER_ALL))
+		else if (date.equals(FilteringConstant.FILTER_ALL))
 			date = BEGINNIG_DATE;
 
 		List<NewsForFiltering> singleNewsList = sqlSession.selectList(NEWS_FOR_FILTERING + "getSingleNewsForFilteringList", date);

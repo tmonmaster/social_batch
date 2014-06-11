@@ -51,6 +51,5 @@ public class NewsForFilteringDaoTest {
 		System.out.println(singleNewsForFilteringList);
 
 		assertNotNull(singleNewsForFilteringList);
-		assertEquals(50, singleNewsForFilteringList.size());
 	}
 }

@@ -44,4 +44,13 @@ public class NewsForFilteringDaoTest {
 		System.out.println(updatedRows);
 	}
 
+	@Test
+	public void getSingleNewsForFilteringList() throws Exception {
+		List<NewsForFiltering> singleNewsForFilteringList = newsForFilteringDao.getSingleNewsForFilteringList("2014-06-10");
+
+		System.out.println(singleNewsForFilteringList);
+
+		assertNotNull(singleNewsForFilteringList);
+		assertEquals(50, singleNewsForFilteringList.size());
+	}
 }

@@ -23,6 +23,7 @@
 		</foreach>
 		)
 	</insert>
+	
 	<insert id="insertRelationList" parameterType="list">
 		INSERT
 		IGNORE
@@ -41,7 +42,7 @@
 			FROM
 				news
 			WHERE
-				date = #{news.date}
+				DATE(date) = DATE(#{news.date})
 			AND
 				news.link = #{news.link}
 			)

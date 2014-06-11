@@ -24,6 +24,24 @@
 			keyword.corp_id, news.news_id
 	</select>
 	
+	<select id="getSingleNewsForFilteringList" parameterType="string" resultType="newsForFiltering">
+		SELECT
+			news.news_id AS newsId,
+			corp_id AS companyId,
+			relation_score AS relationScore
+		FROM
+			news_corp_relation,
+			news
+		WHERE
+			news.news_id = news_corp_relation.news_id
+			AND
+			news.date >= #{date}	
+		GROUP BY
+			news.news_id
+		HAVING 
+		    COUNT(*)=1
+	</select>
+	
 	<update id="updateRelationScoreList" parameterType="list">
 		UPDATE
 			news_corp_relation

@@ -34,11 +34,13 @@ public class MainApp {
 	public static void main(String[] args) throws Exception {
 		Runnable newsBatchTask = new NewsBatchTask();
 		Runnable androidReviewTask = new AndroidReviewBatchTask();
+		Runnable androidRankingTask = new AndroidRankingBatchTask();
 
 		Date currentDate = new Date();
 
 		scheduler.scheduleWithFixedDelay(newsBatchTask, currentDate, MINUTE * DEFAULT_MINUTE_FOR_NEWS);
 		scheduler.scheduleWithFixedDelay(androidReviewTask, currentDate, HOUR * DEFAULT_HOUR_FOR_REVIEW);
+		scheduler.scheduleWithFixedDelay(androidRankingTask, currentDate, HOUR);
 	}
 
 	private static class NewsBatchTask implements Runnable {
@@ -57,6 +59,17 @@ public class MainApp {
 		public void run() {
 			try {
 				batchController.doAndroidReviewBatch();
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+
+	private static class AndroidRankingBatchTask implements Runnable {
+		@Override
+		public void run() {
+			try {
+				batchController.doAndroidRankingBatch();
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}

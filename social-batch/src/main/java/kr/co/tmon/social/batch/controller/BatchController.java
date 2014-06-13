@@ -3,6 +3,7 @@ package kr.co.tmon.social.batch.controller;
 import java.util.List;
 
 import kr.co.tmon.social.batch.service.AndroidAppReviewService;
+import kr.co.tmon.social.batch.service.AndroidRankingService;
 import kr.co.tmon.social.batch.service.NaverNewsService;
 import kr.co.tmon.social.batch.service.NewsService;
 import kr.co.tmon.social.batch.vo.News;
@@ -26,6 +27,8 @@ public class BatchController {
 	@Autowired
 	private AndroidAppReviewService androidAppReviewService;
 	@Autowired
+	private AndroidRankingService androidRankingService;
+	@Autowired
 	private NewsFilteringService newsFilteringService;
 	@Autowired
 	private SingleNewsFilteringService singleNewsFilteringService;
@@ -41,5 +44,9 @@ public class BatchController {
 
 	public void doAndroidReviewBatch() throws Exception {
 		androidAppReviewService.insertReviewList();
+	}
+
+	public void doAndroidRankingBatch() throws Exception {
+		androidRankingService.insertRanking();
 	}
 }

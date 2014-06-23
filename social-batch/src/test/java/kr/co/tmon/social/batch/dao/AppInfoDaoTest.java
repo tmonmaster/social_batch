@@ -36,9 +36,9 @@ public class AppInfoDaoTest {
 	@Rollback(true)
 	public void testInsertVersion() throws Exception {
 		AppInfo appInfo = new AppInfo();
-		appInfo.setAndroidAppVersion("3.1.1");
+		appInfo.setAndroidAppVersion("100.1");
 		appInfo.setAppId("com.tmon");
-		appInfo.setGoogleAppVersion(48);
+		appInfo.setGoogleAppVersion(245);
 		appInfoDao.insertVersion(appInfo);
 	}
 

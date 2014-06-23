@@ -11,6 +11,7 @@ import kr.co.tmon.social.filter.constant.FilteringConstant;
 import kr.co.tmon.social.filter.service.NewsFilteringService;
 import kr.co.tmon.social.filter.service.SingleNewsFilteringService;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -33,10 +34,13 @@ public class BatchController {
 	@Autowired
 	private SingleNewsFilteringService singleNewsFilteringService;
 
+	private Logger logger = Logger.getLogger(BatchController.class);
+
 	public void doNewsBatch() throws Exception {
 		List<News> newsList = naverNewsService.getNewsList();
 
-		newsService.insertNewsList(newsList);
+		int insertedNewsCount = newsService.insertNewsList(newsList);
+		logger.info("수집한 뉴스 : " + insertedNewsCount);
 
 		newsFilteringService.startNewsFiltering(FilteringConstant.FILTER_ALL);
 		singleNewsFilteringService.startSingleNewsFiltering(FilteringConstant.FILTER_ALL);

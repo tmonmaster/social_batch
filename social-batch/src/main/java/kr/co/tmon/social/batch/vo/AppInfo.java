@@ -9,7 +9,7 @@ public class AppInfo {
 	private String appId;
 	private String androidAppVersion;
 	private int googleAppVersion;
-	
+	private int ranking;
 
 	public AppInfo() {} // 마이바티스에서 사용하려면 있어야함
 
@@ -42,9 +42,16 @@ public class AppInfo {
 		this.googleAppVersion = googleAppVersion;
 	}
 
-	@Override
-	public String toString() {
-		return "AppInfo [appId=" + appId + ", androidAppVersion=" + androidAppVersion + ", googleAppVersion=" + googleAppVersion + "]";
+	public int getRanking() {
+		return ranking;
 	}
 
+	public void setRanking(int ranking) {
+		this.ranking = ranking;
+	}
+
+	@Override
+	public String toString() {
+		return "AppInfo [appId=" + appId + ", androidAppVersion=" + androidAppVersion + ", googleAppVersion=" + googleAppVersion + ", ranking=" + ranking + "]";
+	}
 }

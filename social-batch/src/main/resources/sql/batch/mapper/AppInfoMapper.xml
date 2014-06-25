@@ -27,6 +27,23 @@
 			#{androidAppVersion}
 		)
 	</insert>
+	<insert id="insertRankingFromGoogle" parameterType="list">
+		INSERT
+		INTO android_ranking(
+			android_ranking,
+			google_app_version,
+			android_app_id,
+			ranking_date
+		)
+		VALUES(
+		<foreach collection="list" item="appInfo" separator="), (">
+			#{appInfo.ranking},
+			#{appInfo.googleAppVersion},
+			#{appInfo.appId},
+			NOW()
+		</foreach>
+		)
+	</insert>
 	<update id="updateAverageScore" parameterType="map">
 		UPDATE
 			android_app

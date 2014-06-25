@@ -4,6 +4,7 @@ import java.util.Date;
 
 import kr.co.tmon.social.batch.controller.BatchController;
 
+import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.scheduling.TaskScheduler;
@@ -25,20 +26,24 @@ public class MainApp {
 	private static final TaskScheduler scheduler;
 	private static final BatchController batchController;
 
+	private static Logger logger = Logger.getLogger(MainApp.class);
+
 	static {
 		applicationContext = new ClassPathXmlApplicationContext("classpath:spring/applicationContext.xml");
 		scheduler = applicationContext.getBean("taskScheduler", ThreadPoolTaskScheduler.class);
 		batchController = applicationContext.getBean("batchController", BatchController.class);
 	}
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		Runnable newsBatchTask = new NewsBatchTask();
 		Runnable androidReviewTask = new AndroidReviewBatchTask();
+		Runnable androidRankingTask = new AndroidRankingBatchTask();
 
 		Date currentDate = new Date();
 
 		scheduler.scheduleWithFixedDelay(newsBatchTask, currentDate, MINUTE * DEFAULT_MINUTE_FOR_NEWS);
 		scheduler.scheduleWithFixedDelay(androidReviewTask, currentDate, HOUR * DEFAULT_HOUR_FOR_REVIEW);
+		scheduler.scheduleWithFixedDelay(androidRankingTask, currentDate, HOUR);
 	}
 
 	private static class NewsBatchTask implements Runnable {
@@ -47,6 +52,7 @@ public class MainApp {
 			try {
 				batchController.doNewsBatch();
 			} catch (Exception e) {
+				MainApp.logger.error("뉴스 수집 실패", e);
 				throw new RuntimeException(e);
 			}
 		}
@@ -58,6 +64,19 @@ public class MainApp {
 			try {
 				batchController.doAndroidReviewBatch();
 			} catch (Exception e) {
+				MainApp.logger.error("앱 리뷰 수집 실패", e);
+				throw new RuntimeException(e);
+			}
+		}
+	}
+
+	private static class AndroidRankingBatchTask implements Runnable {
+		@Override
+		public void run() {
+			try {
+				batchController.doAndroidRankingBatch();
+			} catch (Exception e) {
+				MainApp.logger.error("앱 랭킹 작업 실패", e);
 				throw new RuntimeException(e);
 			}
 		}

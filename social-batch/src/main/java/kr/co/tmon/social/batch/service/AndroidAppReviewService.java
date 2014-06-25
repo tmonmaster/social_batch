@@ -64,10 +64,8 @@ public class AndroidAppReviewService {
 
 	private Logger log = Logger.getLogger(this.getClass());
 
-	private List<AppInfo> appInfoList;
-
 	public void insertReviewList() throws Exception {
-		appInfoList = appInfoDao.getAppInfoList();
+		List<AppInfo> appInfoList = appInfoDao.getAppInfoList();
 
 		for (AppInfo appInfo : appInfoList) {
 			checkLatestVersion(appInfo);

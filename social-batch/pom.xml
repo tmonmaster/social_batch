@@ -4,7 +4,7 @@
 
 	<groupId>kr.co.tmon.social.batch</groupId>
 	<artifactId>social-batch</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>social-batch</name>
@@ -54,24 +54,6 @@
 		</profile>
 
 		<profile>
-			<id>alpha</id>
-			<properties>
-				<environment>alpha</environment>
-				<maven.test.skip>true</maven.test.skip>
-				<resource.filter>${basedir}/build/filter/build-alpha.filter</resource.filter>
-			</properties>
-		</profile>
-
-		<profile>
-			<id>beta</id>
-			<properties>
-				<environment>beta</environment>
-				<maven.test.skip>true</maven.test.skip>
-				<resource.filter>${basedir}/build/filter/build-beta.filter</resource.filter>
-			</properties>
-		</profile>
-
-		<profile>
 			<id>release</id>
 			<properties>
 				<environment>release</environment>
@@ -106,79 +88,174 @@
 			</testResource>
 		</testResources>
 
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
+					<encoding>${maven.compiler.encoding}</encoding>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>create-jar</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+						<configuration>
+							<descriptorRefs>
+								<descriptorRef>
+									jar-with-dependencies
+								</descriptorRef>
+							</descriptorRefs>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<transformers>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+									<mainClass>com.prototype.springintegration.AppBootstrapper</mainClass>
+								</transformer>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+									<resource>META-INF/spring.handlers</resource>
+								</transformer>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+									<resource>META-INF/spring.schemas</resource>
+								</transformer>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+									<resource>META-INF/spring.factories</resource>
+								</transformer>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+									<resource>META-INF/spring.factories</resource>
+								</transformer>
+								<transformer
+									implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+									<resource>META-INF/spring.tooling</resource>
+								</transformer>
+							</transformers>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<encoding>UTF-8</encoding>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.ant</groupId>
+						<artifactId>ant-trax</artifactId>
+						<version>1.7.1</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<id>clean-classes-and-build-lib</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<echo message="delete compile files" />
+								<delete dir="${basedir}/src/main/resources">
+									<include name="**/jdbc.properties" />
+									<include name="**/log4j.xml" />
+								</delete>
+							</tasks>
+						</configuration>
+					</execution>
+					<execution>
+						<id>add-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<echo message="delete config files to ${basedir}/src/main/resources/." />
+								<delete dir="${basedir}/src/main/resources">
+									<include name="**/jdbc.properties" />
+									<include name="**/log4j.xml" />
+								</delete>
+								<echo message="copy config files to ${basedir}/src/main/resources/." />
+								<copy todir="${basedir}/src/main/resources/" encoding="UTF-8">
+									<fileset dir="${basedir}/build/config">
+										<include name="**/jdbc.properties" />
+										<include name="**/log4j.xml" />
+									</fileset>
+									<filterset>
+										<filtersfile file="${resource.filter}" />
+									</filterset>
+								</copy>
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 		<pluginManagement>
 			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
 				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-compiler-plugin</artifactId>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
 					<configuration>
-						<source>${maven.compiler.source}</source>
-						<target>${maven.compiler.target}</target>
-						<encoding>${maven.compiler.encoding}</encoding>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.apache.maven.plugins
+										</groupId>
+										<artifactId>
+											maven-antrun-plugin
+										</artifactId>
+										<versionRange>
+											[1.3,)
+										</versionRange>
+										<goals>
+											<goal>run</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
 					</configuration>
-				</plugin>
-
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-resources-plugin</artifactId>
-					<configuration>
-						<encoding>UTF-8</encoding>
-					</configuration>
-				</plugin>
-
-				<plugin>
-					<artifactId>maven-antrun-plugin</artifactId>
-					<dependencies>
-						<dependency>
-							<groupId>org.apache.ant</groupId>
-							<artifactId>ant-trax</artifactId>
-							<version>1.7.1</version>
-						</dependency>
-					</dependencies>
-					<executions>
-						<execution>
-							<id>clean-classes-and-build-lib</id>
-							<phase>clean</phase>
-							<goals>
-								<goal>run</goal>
-							</goals>
-							<configuration>
-								<tasks>
-									<echo message="delete compile files" />
-									<delete dir="${basedir}/src/main/resources">
-										<include name="**/jdbc.properties" />
-										<include name="**/log4j.xml" />
-									</delete>
-								</tasks>
-							</configuration>
-						</execution>
-						<execution>
-							<id>generate-configuration</id>
-							<phase>generate-sources</phase>
-							<goals>
-								<goal>run</goal>
-							</goals>
-							<configuration>
-								<tasks>
-									<echo message="delete config files to ${basedir}/src/main/resources/." />
-									<delete dir="${basedir}/src/main/resources">
-										<include name="**/jdbc.properties" />
-										<include name="**/log4j.xml" />
-									</delete>
-									<echo message="copy config files to ${basedir}/src/main/resources/." />
-									<copy todir="${basedir}/src/main/resources/" encoding="UTF-8">
-										<fileset dir="${basedir}/build/config">
-											<include name="**/jdbc.properties" />
-											<include name="**/log4j.xml" />
-										</fileset>
-										<filterset>
-											<filtersfile file="${resource.filter}" />
-										</filterset>
-									</copy>
-								</tasks>
-							</configuration>
-						</execution>
-					</executions>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -319,13 +396,6 @@
 			<groupId>org.twitter4j</groupId>
 			<artifactId>twitter4j-core</artifactId>
 			<version>[4.0,)</version>
-		</dependency>
-
-		<!-- Elastic Search & Lucene -->
-		<dependency>
-			<groupId>org.elasticsearch</groupId>
-			<artifactId>elasticsearch</artifactId>
-			<version>1.2.0</version>
 		</dependency>
 	</dependencies>
 </project>

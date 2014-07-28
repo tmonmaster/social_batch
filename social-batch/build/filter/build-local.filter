@@ -1,7 +1,7 @@
 #log4j
 logLevel=DEBUG
 logAppender=stdout
-logFileName=D:/social_batch/socialDataLog.log
+logFileName=/social_batch/socialDataLog.log
 
 # DB url, username, password
 url=10.5.220.81:3306/issue_analyzer

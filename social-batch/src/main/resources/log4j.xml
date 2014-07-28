@@ -10,7 +10,7 @@
          
 	<!-- 날짜별로  로그를 남김. 파일명.확장자.DatePattern으로 정의 함		-->
     <appender name="dailyout" class="org.apache.log4j.DailyRollingFileAppender">    
-        <param name="file" value="D:/source/log/socialDataLog.log" />
+        <param name="file" value="/social_batch/socialDataLog.log" />
         <param name="Append" value="true" />  
         <param name="DatePattern" value="'.'yyMMdd" />  
         <layout class="org.apache.log4j.PatternLayout">  
@@ -19,8 +19,8 @@
     </appender>   
      
     <root>  
-        <level value="INFO" />  
-        <appender-ref ref="dailyout" />
+        <level value="DEBUG" />  
+        <appender-ref ref="stdout" />
     </root>  
     
 </log4j:configuration>

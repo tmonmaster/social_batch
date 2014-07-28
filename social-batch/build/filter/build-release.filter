@@ -1,9 +1,9 @@
 #log4j
-logLevel=INFO
+logLevel=DEBUG
 logAppender=stdout
-logFileName=D:/social_batch/socialDataLog.log
+logFileName=/social_batch/socialDataLog.log
 
 # DB url, username, password
-url=release
-username=release
-password=release
+url=tnews.tmonc.net:3306/issue_analyzer
+username=tmonnews
+password=
